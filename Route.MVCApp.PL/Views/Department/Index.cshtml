@@ -1,0 +1,46 @@
+﻿@model IEnumerable<DepartmentToReturnDto>
+@{
+	ViewData["Title"] = "Departments";
+}
+
+<h1>All Departments</h1>
+<br />
+<br />
+
+<a asp-asp-controller="Department" asp-action="Create" class="btn btn-primary">Create NEW Department</a>
+<br />
+
+@if (Model.Count() > 0)
+{
+	<table class="table table-striped table-hover">
+		<thead class="text-center">
+			<tr>
+				<th>@Html.DisplayNameFor(D => D.Code)</th>
+				<th>@Html.DisplayNameFor(D => D.Name)</th>
+				<th>@Html.DisplayNameFor(D => D.CreationDate)</th>
+				<th>Details</th>
+				<th>Update</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody class="text-center">
+			@foreach (var department in Model)
+			{
+				<tr>
+					<td>@department.Code</td>
+					<td>@department.Name</td>
+					<td>@department.CreationDate</td>
+					<td><a class="btn btn-warning" asp-controller="Department" asp-action="Details" asp-route-id="@department.Id"><i class="fa-solid fa-eye"></i> Details</a></td>
+					<td><a class="btn btn-success" asp-controller="Department" asp-action="Edit" asp-route-id="@department.Id"><i class="fas fa-edit"></i> Edit</a></td>
+					<td><a class="btn btn-danger" asp-controller="Department" asp-action="Delete" asp-route-id="@department.Id"><i class="fas fa-trash"></i> Delete</a></td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+else
+{
+	<div class="mt-4 alert alert-info">
+		<h4>No Departments found :(</h4>
+	</div>
+}

@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Route.MVC.DAL/Route.MVCApp.DAL.csproj" />
+  <Project Path="Route.MVCApp.BLL/Route.MVCApp.BLL.csproj" />
+  <Project Path="Route.MVCApp.PL/Route.MVCApp.PL.csproj" />
+</Solution>
