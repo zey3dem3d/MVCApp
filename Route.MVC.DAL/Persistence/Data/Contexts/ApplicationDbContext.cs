@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Route.MVCApp.DAL.Models.Departments;
+using Route.MVCApp.DAL.Models.Employees;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,13 @@ namespace Route.MVCApp.DAL.Persistence.Data.Contexts
         {
 
         }
-
+            
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Employee> Employees { get; set; }
     }
 }
