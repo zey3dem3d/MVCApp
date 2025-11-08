@@ -1,4 +1,4 @@
-﻿using Route.MVCApp.BLL.DTOs;
+﻿using Route.MVCApp.BLL.DTOs.Departments;
 using Route.MVCApp.DAL.Models.Departments;
 using System;
 using System.Collections.Generic;

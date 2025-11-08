@@ -90,6 +90,9 @@ namespace Route.MVCApp.DAL.Persistence.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("EmployeeType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

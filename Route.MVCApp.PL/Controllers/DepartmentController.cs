@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Route.MVCApp.BLL.DTOs;
+using Route.MVCApp.BLL.DTOs.Departments;
 using Route.MVCApp.BLL.Services.Departments;
 using Route.MVCApp.PL.ViewModels.Department;
 

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Route.MVCApp.BLL.DTOs;
+using Route.MVCApp.BLL.DTOs.Departments;
 using Route.MVCApp.DAL.Models.Departments;
 using Route.MVCApp.DAL.Persistence.Data.Contexts;
 using Route.MVCApp.DAL.Persistence.Repositories.Departments;

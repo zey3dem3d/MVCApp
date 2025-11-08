@@ -12,7 +12,7 @@ using Route.MVCApp.DAL.Persistence.Data.Contexts;
 namespace Route.MVCApp.DAL.Persistence.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251107214058_EmployeeModuleMigration")]
+    [Migration("20251108221942_EmployeeModuleMigration")]
     partial class EmployeeModuleMigration
     {
         /// <inheritdoc />
@@ -92,6 +92,9 @@ namespace Route.MVCApp.DAL.Persistence.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmployeeType")
                         .IsRequired()

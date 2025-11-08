@@ -22,6 +22,7 @@ namespace Route.MVCApp.DAL.Persistence.Data.Migrations
                     Address = table.Column<string>(type: "varchar(100)", nullable: true),
                     Salary = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     HiringDate = table.Column<DateOnly>(type: "date", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),

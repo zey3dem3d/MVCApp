@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Route.MVCApp.DAL.Persistence.Repositories.Employees
 {
-    internal class EmployeeRepository : GenericRepository<Employee>, IEmployeeRepository
+    public class EmployeeRepository : GenericRepository<Employee>, IEmployeeRepository
     {
         public EmployeeRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
