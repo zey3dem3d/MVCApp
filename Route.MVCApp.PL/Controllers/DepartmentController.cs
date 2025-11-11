@@ -39,6 +39,7 @@ namespace Route.MVCApp.PL.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(CreatedDepartmentDto departmentDto)
         {
             if (!ModelState.IsValid)
@@ -118,6 +119,7 @@ namespace Route.MVCApp.PL.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit([FromRoute] int id, DepartmentEditVM departmentVM)
         {
             if (!ModelState.IsValid)
@@ -171,6 +173,7 @@ namespace Route.MVCApp.PL.Controllers
         //}
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete([FromRoute] int id)
         {
             var message = string.Empty;

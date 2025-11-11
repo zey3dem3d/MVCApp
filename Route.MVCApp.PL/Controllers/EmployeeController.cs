@@ -38,6 +38,7 @@ namespace Route.MVCApp.PL.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(CreatedEmployeeDto employeeDto)
         {
             if (!ModelState.IsValid)
@@ -116,6 +117,7 @@ namespace Route.MVCApp.PL.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto employeeDto)
         {
             if (!ModelState.IsValid)
@@ -146,6 +148,7 @@ namespace Route.MVCApp.PL.Controllers
 
         #region Delete
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete([FromRoute] int id)
         {
             var message = string.Empty;
