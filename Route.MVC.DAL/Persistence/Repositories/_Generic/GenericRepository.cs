@@ -17,9 +17,9 @@ namespace Route.MVCApp.DAL.Persistence.Repositories._Generic
         public IEnumerable<T> GetAll(bool withNoTracking = true)
         {
             if (withNoTracking)
-                return _dbContext.Set<T>().AsNoTracking().ToList(); // Detached
+                return _dbContext.Set<T>().Where(X => !X.IsDeleted).AsNoTracking().ToList(); // Detached
 
-            return _dbContext.Set<T>().ToList(); // Unchanged
+            return _dbContext.Set<T>().Where(X => !X.IsDeleted).ToList(); // Unchanged
         }
 
         public IQueryable<T> GetAllAsIQueryable()
@@ -45,7 +45,9 @@ namespace Route.MVCApp.DAL.Persistence.Repositories._Generic
 
         public int Delete(T entity)
         {
-            _dbContext.Set<T>().Remove(entity);
+            entity.IsDeleted = true;
+
+            _dbContext.Set<T>().Update(entity);
             return _dbContext.SaveChanges();
         }
 

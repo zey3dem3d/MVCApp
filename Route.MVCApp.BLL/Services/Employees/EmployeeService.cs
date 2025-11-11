@@ -21,6 +21,7 @@ namespace Route.MVCApp.BLL.Services.Employees
         {
             var employees = _employeeRepository
                             .GetAllAsIQueryable()
+                            .Where(E => !E.IsDeleted)
                             .Select(employee => new EmployeeDto()
                             {
                                 Id = employee.Id,
@@ -61,7 +62,7 @@ namespace Route.MVCApp.BLL.Services.Employees
                 };
 
             return null!;
-        }
+        }   
 
         public int CreateEmployee(CreatedEmployeeDto employeeDto)
         {
@@ -89,6 +90,7 @@ namespace Route.MVCApp.BLL.Services.Employees
         {
             var employee = new Employee()
             {
+                Id = employeeDto.Id,
                 Name = employeeDto.Name,
                 Age = employeeDto.Age,
                 IsActive = employeeDto.IsActive,
