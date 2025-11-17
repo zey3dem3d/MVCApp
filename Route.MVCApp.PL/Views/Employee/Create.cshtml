@@ -56,7 +56,7 @@
 			@foreach (Gender genderOption in Enum.GetValues(typeof(Gender)))
 			{
 				<div class="form-check">
-					<input type="radio" class="form-check-input" asp-for="Gender" value="@genderOption"/>
+					<input type="radio" class="form-check-input" asp-for="Gender" value="@genderOption" />
 					<label class="form-check-label" asp-for="Gender">
 						@genderOption
 					</label>
@@ -90,3 +90,9 @@
 	</form>
 
 </div>
+
+@section ValidationScripts
+{
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
