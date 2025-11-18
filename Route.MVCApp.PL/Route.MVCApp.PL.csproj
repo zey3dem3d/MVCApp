@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Route.MVCApp.BLL\Route.MVCApp.BLL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Employee\Partials\" />
-  </ItemGroup>
-
 </Project>
