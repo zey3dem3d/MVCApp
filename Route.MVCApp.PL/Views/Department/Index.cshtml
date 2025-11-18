@@ -30,8 +30,9 @@
 					<td>@department.Code</td>
 					<td>@department.Name</td>
 					<td>@department.CreationDate</td>
-					<td><a class="btn btn-warning" asp-controller="Department" asp-action="Details" asp-route-id="@department.Id"><i class="fa-solid fa-eye"></i> Details</a></td>
-					<td><a class="btn btn-success" asp-controller="Department" asp-action="Edit" asp-route-id="@department.Id"><i class="fas fa-edit"></i> Edit</a></td>
+
+					<partial name="_ButtonsPartial" model="@department.Id" />
+
 					<td>
 						@*Delete Modal*@
 

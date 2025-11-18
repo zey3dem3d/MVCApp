@@ -40,16 +40,24 @@ namespace Route.MVCApp.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreatedDepartmentDto departmentDto)
+        public IActionResult Create(DepartmentVM departmentVM)
         {
             if (!ModelState.IsValid)
-                return View(departmentDto);
+                return View(departmentVM);
 
             var message = string.Empty;
 
             try
             {
-                var result = _departmentService.CreateDepartment(departmentDto);
+                var CreatedDepartment = new CreatedDepartmentDto()
+                {
+                    Code = departmentVM.Code,
+                    Name = departmentVM.Name,
+                    Description = departmentVM.Description,
+                    CreationDate = departmentVM.CreationDate
+                };
+
+                var result = _departmentService.CreateDepartment(CreatedDepartment);
 
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
@@ -58,7 +66,7 @@ namespace Route.MVCApp.PL.Controllers
                 {
                     message = "Department Is Not Created";
                     ModelState.AddModelError(string.Empty, "Department is Not Created");
-                    return View(departmentDto);
+                    return View(departmentVM);
                 }
             }
             catch (Exception ex)
@@ -69,7 +77,7 @@ namespace Route.MVCApp.PL.Controllers
                 if (_environment.IsDevelopment())
                 {
                     message = ex.Message;
-                    return View(departmentDto);
+                    return View(departmentVM);
                 }
                 else
                 {
@@ -109,7 +117,7 @@ namespace Route.MVCApp.PL.Controllers
             if (department is null)
                 return NotFound();
 
-            return View(new DepartmentEditVM()
+            return View(new DepartmentVM()
             {
                 Code = department.Code,
                 Name = department.Name,
@@ -120,7 +128,7 @@ namespace Route.MVCApp.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute] int id, DepartmentEditVM departmentVM)
+        public IActionResult Edit([FromRoute] int id, DepartmentVM departmentVM)
         {
             if (!ModelState.IsValid)
                 return View(departmentVM);

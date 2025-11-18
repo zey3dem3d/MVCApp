@@ -2,7 +2,7 @@
 
 namespace Route.MVCApp.PL.ViewModels.Department
 {
-    public class DepartmentEditVM
+    public class DepartmentVM
     {
         [Required(ErrorMessage = "Department code is required.")]
         public string Code { get; set; } = null!;
