@@ -1,4 +1,8 @@
-﻿@model UpdatedEmployeeDto
+﻿@model EmployeeBaseDto
+@inject IDepartmentService departmentService
+@{
+	var Deaprtments = new SelectList(departmentService.GetAllDepartments(), nameof(DepartmentToReturnDto.Id), nameof(DepartmentToReturnDto.Name));
+}
 
 <form asp-action="@ViewBag.Action" class="row col-6">
 
@@ -34,6 +38,13 @@
 		<label class="col-form-label" asp-for="PhoneNumber"></label>
 		<input asp-for="PhoneNumber" class="form-control" />
 		<span asp-validation-for="PhoneNumber" class="text-danger"></span>
+	</div>
+
+	<div class="form-group col-6">
+		<label class="control-label" asp-for="DepartmentId"></label>
+		<select asp-for="DepartmentId" asp-items="@Deaprtments" class="form-control">
+			<option value="@null">Choose...</option>
+		</select>
 	</div>
 
 	<div class="form-group col-6">

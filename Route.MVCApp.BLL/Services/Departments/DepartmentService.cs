@@ -21,7 +21,7 @@ namespace Route.MVCApp.BLL.Services.Departments
 
         public IEnumerable<DepartmentToReturnDto> GetAllDepartments()
         {
-            var departments = _departmentRepository.GetAllAsIQueryable().Select(department => new DepartmentToReturnDto()
+            var departments = _departmentRepository.GetAllAsIQueryable().Where(E => !E.IsDeleted).Select(department => new DepartmentToReturnDto()
             {
                 Id = department.Id,
                 Code = department.Code,

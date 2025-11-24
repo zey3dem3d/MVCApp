@@ -17,11 +17,11 @@ namespace Route.MVCApp.BLL.Services.Employees
         {
             _employeeRepository = employeeRepository;
         }
-        public IEnumerable<EmployeeDto> GetAllEmployees()
+        public IEnumerable<EmployeeDto> GetAllEmployees(string search)
         {
             var employees = _employeeRepository
                             .GetAllAsIQueryable()
-                            .Where(E => !E.IsDeleted)
+                            .Where(E => !E.IsDeleted && (string.IsNullOrEmpty(search) || E.Name.ToLower().Contains(search.ToLower())))
                             .Select(employee => new EmployeeDto()
                             {
                                 Id = employee.Id,
@@ -30,8 +30,9 @@ namespace Route.MVCApp.BLL.Services.Employees
                                 Salary = employee.Salary,
                                 IsActive = employee.IsActive,
                                 Email = employee.Email,
-                                EmployeeType = employee.EmployeeType.ToString(),
                                 Gender = employee.Gender.ToString(),
+                                EmployeeType = employee.EmployeeType.ToString(),
+                                Department = employee.Department.Name 
                             }).ToList();
 
             return employees;
@@ -62,7 +63,7 @@ namespace Route.MVCApp.BLL.Services.Employees
                 };
 
             return null!;
-        }   
+        }
 
         public int CreateEmployee(CreatedEmployeeDto employeeDto)
         {
@@ -78,6 +79,7 @@ namespace Route.MVCApp.BLL.Services.Employees
                 HiringDate = employeeDto.HiringDate,
                 Gender = employeeDto.Gender,
                 EmployeeType = employeeDto.EmployeeType,
+                DepartmentId = employeeDto.DepartmentId,
                 CreatedBy = 1,
                 LastModifiedBy = 1,
                 LastModifiedOn = DateTime.UtcNow,
@@ -101,6 +103,7 @@ namespace Route.MVCApp.BLL.Services.Employees
                 HiringDate = employeeDto.HiringDate,
                 Gender = employeeDto.Gender,
                 EmployeeType = employeeDto.EmployeeType,
+                DepartmentId = employeeDto.DepartmentId,
                 CreatedBy = 1,
                 LastModifiedBy = 1,
                 LastModifiedOn = DateTime.UtcNow,

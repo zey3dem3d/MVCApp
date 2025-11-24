@@ -1,4 +1,5 @@
 ﻿using Route.MVCApp.DAL.Common;
+using Route.MVCApp.DAL.Models.Departments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,12 @@ namespace Route.MVCApp.DAL.Models.Employees
         public DateOnly HiringDate { get; set; }
         public Gender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
+
+        // Navigation Properties
+        public Department? Department { get; set; }
+        public int? DepartmentId
+        {
+            get; set;
+        }
     }
 }

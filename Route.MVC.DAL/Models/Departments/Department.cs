@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Route.MVCApp.DAL.Models.Employees;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,8 @@ namespace Route.MVCApp.DAL.Models.Departments
         public string Code { get; set; } = null!;
         public string? Description { get; set; }
         public DateOnly CreationDate { get; set; }
+
+        // Navigation Properties
+        public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
     }
 }

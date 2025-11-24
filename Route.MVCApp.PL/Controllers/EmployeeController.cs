@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Route.MVCApp.BLL.DTOs.Employees;
+using Route.MVCApp.BLL.Services.Departments;
 using Route.MVCApp.BLL.Services.Employees;
 using Route.MVCApp.DAL.Models.Employees;
 
@@ -22,9 +23,9 @@ namespace Route.MVCApp.PL.Controllers
 
         #region Index
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string search)
         {
-            var departments = _employeeService.GetAllEmployees();
+            var departments = _employeeService.GetAllEmployees(search);
 
             return View(departments);
         }

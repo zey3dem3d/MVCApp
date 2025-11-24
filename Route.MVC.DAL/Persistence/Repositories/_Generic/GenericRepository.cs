@@ -43,16 +43,16 @@ namespace Route.MVCApp.DAL.Persistence.Repositories._Generic
             return _dbContext.SaveChanges();
         }
 
-        public int Delete(T entity)
+        public int Update(T entity)
         {
-            entity.IsDeleted = true;
-
             _dbContext.Set<T>().Update(entity);
             return _dbContext.SaveChanges();
         }
 
-        public int Update(T entity)
+        public int Delete(T entity)
         {
+            entity.IsDeleted = true;
+
             _dbContext.Set<T>().Update(entity);
             return _dbContext.SaveChanges();
         }
