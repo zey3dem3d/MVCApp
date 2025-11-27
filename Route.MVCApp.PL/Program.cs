@@ -4,6 +4,8 @@ using Route.MVCApp.BLL.Services.Employees;
 using Route.MVCApp.DAL.Persistence.Data.Contexts;
 using Route.MVCApp.DAL.Persistence.Repositories.Departments;
 using Route.MVCApp.DAL.Persistence.Repositories.Employees;
+using Route.MVCApp.DAL.Persistence.UnitOfWork;
+using Route.MVCApp.PL.Mapping;
 
 namespace Route.MVCApp.PL
 {
@@ -22,13 +24,17 @@ namespace Route.MVCApp.PL
                 optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepositories>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            //builder.Services.AddScoped<IDepartmentRepository, DepartmentRepositories>();
 
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
-            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            //builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
+            builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
 
             #endregion
 

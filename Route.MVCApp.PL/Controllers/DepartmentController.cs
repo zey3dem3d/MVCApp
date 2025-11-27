@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Route.MVCApp.BLL.DTOs;
 using Route.MVCApp.BLL.DTOs.Departments;
 using Route.MVCApp.BLL.Services.Departments;
@@ -12,13 +13,15 @@ namespace Route.MVCApp.PL.Controllers
         private readonly IDepartmentService _departmentService;
         private readonly ILogger<DepartmentController> _logger;
         private readonly IWebHostEnvironment _environment;
+        private readonly IMapper _mapper;
 
-        public DepartmentController(IDepartmentService departmentService, ILogger<DepartmentController> logger, IWebHostEnvironment environment)
+        public DepartmentController(IDepartmentService departmentService, ILogger<DepartmentController> logger, IWebHostEnvironment environment, IMapper mapper)
         {
             _departmentService = departmentService;
             _logger = logger;
             _environment = environment;
-        } 
+            _mapper = mapper;
+        }
         #endregion
 
         #region Index
@@ -49,13 +52,15 @@ namespace Route.MVCApp.PL.Controllers
 
             try
             {
-                var CreatedDepartment = new CreatedDepartmentDto()
-                {
-                    Code = departmentVM.Code,
-                    Name = departmentVM.Name,
-                    Description = departmentVM.Description,
-                    CreationDate = departmentVM.CreationDate
-                };
+                //var CreatedDepartment = new CreatedDepartmentDto()
+                //{
+                //    Code = departmentVM.Code,
+                //    Name = departmentVM.Name,
+                //    Description = departmentVM.Description,
+                //    CreationDate = departmentVM.CreationDate
+                //};
+
+                var CreatedDepartment =_mapper.Map<DepartmentVM, CreatedDepartmentDto>(departmentVM);
 
                 var result = _departmentService.CreateDepartment(CreatedDepartment);
 
@@ -137,14 +142,16 @@ namespace Route.MVCApp.PL.Controllers
 
             try
             {
-                var updatedDepartment = new UpdatedDepartmentDto()
-                {
-                    Id = id,
-                    Code = departmentVM.Code,
-                    Name = departmentVM.Name,
-                    Description = departmentVM.Description,
-                    CreationDate = departmentVM.CreationDate
-                };
+                //var updatedDepartment = new UpdatedDepartmentDto()
+                //{
+                //    Id = id,
+                //    Code = departmentVM.Code,
+                //    Name = departmentVM.Name,
+                //    Description = departmentVM.Description,
+                //    CreationDate = departmentVM.CreationDate
+                //};
+
+                var updatedDepartment = _mapper.Map<DepartmentVM, UpdatedDepartmentDto>(departmentVM);
 
                 var Updated = _departmentService.UpdateDepartment(updatedDepartment) > 0;
 

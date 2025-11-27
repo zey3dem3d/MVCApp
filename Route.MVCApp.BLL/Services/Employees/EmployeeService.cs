@@ -1,6 +1,7 @@
 ﻿using Route.MVCApp.BLL.DTOs.Employees;
 using Route.MVCApp.DAL.Models.Employees;
 using Route.MVCApp.DAL.Persistence.Repositories.Employees;
+using Route.MVCApp.DAL.Persistence.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,15 +12,16 @@ namespace Route.MVCApp.BLL.Services.Employees
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public EmployeeService(IEmployeeRepository employeeRepository)
+        public EmployeeService(IUnitOfWork unitOfWork)
         {
-            _employeeRepository = employeeRepository;
+            _unitOfWork = unitOfWork;
         }
+
         public IEnumerable<EmployeeDto> GetAllEmployees(string search)
         {
-            var employees = _employeeRepository
+            var employees = _unitOfWork.EmployeeRepository
                             .GetAllAsIQueryable()
                             .Where(E => !E.IsDeleted && (string.IsNullOrEmpty(search) || E.Name.ToLower().Contains(search.ToLower())))
                             .Select(employee => new EmployeeDto()
@@ -32,7 +34,7 @@ namespace Route.MVCApp.BLL.Services.Employees
                                 Email = employee.Email,
                                 Gender = employee.Gender.ToString(),
                                 EmployeeType = employee.EmployeeType.ToString(),
-                                Department = employee.Department.Name 
+                                Department = employee.Department.Name
                             }).ToList();
 
             return employees;
@@ -40,7 +42,7 @@ namespace Route.MVCApp.BLL.Services.Employees
 
         public EmployeeDetailsDto GetEmployeeById(int Id)
         {
-            var employee = _employeeRepository.Get(Id);
+            var employee = _unitOfWork.EmployeeRepository.Get(Id);
 
             if (employee is { })
                 return new EmployeeDetailsDto()
@@ -85,7 +87,8 @@ namespace Route.MVCApp.BLL.Services.Employees
                 LastModifiedOn = DateTime.UtcNow,
             };
 
-            return _employeeRepository.Add(employee);
+            _unitOfWork.EmployeeRepository.Add(employee);
+            return _unitOfWork.Complete();
         }
 
         public int UpdateEmployee(UpdatedEmployeeDto employeeDto)
@@ -109,16 +112,19 @@ namespace Route.MVCApp.BLL.Services.Employees
                 LastModifiedOn = DateTime.UtcNow,
             };
 
-            return _employeeRepository.Update(employee);
+            _unitOfWork.EmployeeRepository.Update(employee);
+            return _unitOfWork.Complete();
         }
 
         public bool DeletedEmployee(int Id)
         {
-            var employee = _employeeRepository.Get(Id);
-            if (employee is { })
-                return _employeeRepository.Delete(employee) > 0;
+            var employeeRepo = _unitOfWork.EmployeeRepository;
 
-            return false;
+            var employee = employeeRepo.Get(Id);
+            if (employee is { })
+                employeeRepo.Delete(employee);
+
+            return _unitOfWork.Complete() > 0;
         }
 
     }

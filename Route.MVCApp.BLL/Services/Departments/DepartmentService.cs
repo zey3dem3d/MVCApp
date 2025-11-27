@@ -3,6 +3,7 @@ using Route.MVCApp.BLL.DTOs.Departments;
 using Route.MVCApp.DAL.Models.Departments;
 using Route.MVCApp.DAL.Persistence.Data.Contexts;
 using Route.MVCApp.DAL.Persistence.Repositories.Departments;
+using Route.MVCApp.DAL.Persistence.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,15 +14,16 @@ namespace Route.MVCApp.BLL.Services.Departments
 {
     public class DepartmentService : IDepartmentService
     {
-        private readonly IDepartmentRepository _departmentRepository;
-        public DepartmentService(IDepartmentRepository departmentRepository)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public DepartmentService(IUnitOfWork unitOfWork)
         {
-            _departmentRepository = departmentRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public IEnumerable<DepartmentToReturnDto> GetAllDepartments()
         {
-            var departments = _departmentRepository.GetAllAsIQueryable().Where(E => !E.IsDeleted).Select(department => new DepartmentToReturnDto()
+            var departments = _unitOfWork.DepartmentRepository.GetAllAsIQueryable().Where(E => !E.IsDeleted).Select(department => new DepartmentToReturnDto()
             {
                 Id = department.Id,
                 Code = department.Code,
@@ -34,7 +36,7 @@ namespace Route.MVCApp.BLL.Services.Departments
 
         public DepartmentDetailsDto GetDepartmentById(int Id)
         {
-            var department = _departmentRepository.Get(Id);
+            var department = _unitOfWork.DepartmentRepository.Get(Id);
 
             if(department is { })
                 return new DepartmentDetailsDto()
@@ -66,7 +68,8 @@ namespace Route.MVCApp.BLL.Services.Departments
                 LastModifiedOn = DateTime.Now,
             };
 
-            return _departmentRepository.Add(department);
+             _unitOfWork.DepartmentRepository.Add(department);
+            return _unitOfWork.Complete();
         }
 
         public int UpdateDepartment(UpdatedDepartmentDto departmentDto)
@@ -83,17 +86,20 @@ namespace Route.MVCApp.BLL.Services.Departments
                 LastModifiedOn = DateTime.Now,
             };
 
-            return _departmentRepository.Update(department);
+             _unitOfWork.DepartmentRepository.Update(department);
+            return _unitOfWork.Complete();
         }
 
         public bool DeletedDepartment(int Id)
         {
-            var department = _departmentRepository.Get(Id);
+            var departmentRepo = _unitOfWork.DepartmentRepository;
+
+            var department = departmentRepo.Get(Id);
 
             if (department is { })
-                return _departmentRepository.Delete(department) > 0;
+                departmentRepo.Delete(department);
 
-            return false;
+            return _unitOfWork.Complete() > 0;
         }
     }
 }
