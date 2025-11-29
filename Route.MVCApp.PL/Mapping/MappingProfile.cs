@@ -2,6 +2,7 @@
 using Route.MVCApp.BLL.DTOs.Departments;
 using Route.MVCApp.BLL.DTOs.Employees;
 using Route.MVCApp.DAL.Models;
+using Route.MVCApp.DAL.Models.Employees;
 using Route.MVCApp.PL.ViewModels.Department;
 
 namespace Route.MVCApp.PL.Mapping
@@ -25,6 +26,7 @@ namespace Route.MVCApp.PL.Mapping
 
             CreateMap<DepartmentVM, CreatedDepartmentDto>();
 
+            //CreateMap<UpdatedEmployeeDto, Employee>();
             #endregion
         }
     }

@@ -28,7 +28,7 @@ namespace Route.MVCApp.BLL.Common.Service.Attachments
             //var folderPath = $"{Directory.GetCurrentDirectory()}\\wwwroot\\files\\{folderName}";
             var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\files", folderName);
 
-            if (Directory.Exists(folderPath))
+            if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
 
             // Set Unique File Name
@@ -48,11 +48,17 @@ namespace Route.MVCApp.BLL.Common.Service.Attachments
 
         }
 
-        public bool Delete(string filePath)
+        public bool Delete(string fileName, string folderName = "images")
         {
-            if (File.Exists(filePath))
+            if (string.IsNullOrEmpty(fileName))
+                return false;
+
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\files", folderName);
+            var fullPath = Path.Combine(folderPath, fileName);
+
+            if (File.Exists(fullPath))
             {
-                File.Delete(filePath);
+                File.Delete(fullPath);
                 return true;
             }
 

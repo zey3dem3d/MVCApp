@@ -37,7 +37,9 @@ namespace Route.MVCApp.BLL.Services.Employees
                                 Email = employee.Email,
                                 Gender = employee.Gender.ToString(),
                                 EmployeeType = employee.EmployeeType.ToString(),
-                                Department = employee.Department.Name
+                                Department = employee.Department.Name,
+                                Image = employee.Image,
+
                             }).ToList();
 
             return employees;
@@ -61,10 +63,8 @@ namespace Route.MVCApp.BLL.Services.Employees
                     HiringDate = employee.HiringDate,
                     Gender = employee.Gender,
                     EmployeeType = employee.EmployeeType,
-                    CreatedBy = employee.CreatedBy,
-                    CreatedOn = employee.CreatedOn,
-                    LastModifiedBy = employee.LastModifiedBy,
-                    LastModifiedOn = employee.LastModifiedOn,
+                    Department = employee.Department?.Name ?? "",
+                    Image = employee.Image,
                 };
 
             return null!;
@@ -90,8 +90,8 @@ namespace Route.MVCApp.BLL.Services.Employees
                 LastModifiedOn = DateTime.UtcNow,
             };
 
-            if(employeeDto.Image is not null)
-            employee.Image = _attachmentService.Upload(employeeDto.Image, "images");
+            if (employeeDto.Image is not null)
+                employee.Image = _attachmentService.Upload(employeeDto.Image, "images");
 
             _unitOfWork.EmployeeRepository.Add(employee);
 
@@ -100,26 +100,35 @@ namespace Route.MVCApp.BLL.Services.Employees
 
         public int UpdateEmployee(UpdatedEmployeeDto employeeDto)
         {
-            var employee = new Employee()
-            {
-                Id = employeeDto.Id,
-                Name = employeeDto.Name,
-                Age = employeeDto.Age,
-                IsActive = employeeDto.IsActive,
-                Address = employeeDto.Address,
-                Salary = employeeDto.Salary,
-                Email = employeeDto.Email,
-                PhoneNumber = employeeDto.PhoneNumber,
-                HiringDate = employeeDto.HiringDate,
-                Gender = employeeDto.Gender,
-                EmployeeType = employeeDto.EmployeeType,
-                DepartmentId = employeeDto.DepartmentId,
-                CreatedBy = 1,
-                LastModifiedBy = 1,
-                LastModifiedOn = DateTime.UtcNow,
-            };
+            var oldEmployee = _unitOfWork.EmployeeRepository.Get(employeeDto.Id);
 
-            _unitOfWork.EmployeeRepository.Update(employee);
+            if (oldEmployee is null)
+                return 0;
+
+            if (employeeDto.Image is not null)
+            {
+                if (oldEmployee.Image is not null)
+                    _attachmentService.Delete(oldEmployee.Image, "images");
+
+                var newImage = _attachmentService.Upload(employeeDto.Image, "images");
+                oldEmployee.Image = newImage;
+            }
+
+            oldEmployee.Name = employeeDto.Name;
+            oldEmployee.Age = employeeDto.Age;
+            oldEmployee.IsActive = employeeDto.IsActive;
+            oldEmployee.Address = employeeDto.Address;
+            oldEmployee.Salary = employeeDto.Salary;
+            oldEmployee.Email = employeeDto.Email;
+            oldEmployee.PhoneNumber = employeeDto.PhoneNumber;
+            oldEmployee.HiringDate = employeeDto.HiringDate;
+            oldEmployee.Gender = employeeDto.Gender;
+            oldEmployee.EmployeeType = employeeDto.EmployeeType;
+            oldEmployee.DepartmentId = employeeDto.DepartmentId;
+            oldEmployee.LastModifiedBy = 1;
+            oldEmployee.LastModifiedOn = DateTime.UtcNow;
+
+            _unitOfWork.EmployeeRepository.Update(oldEmployee);
             return _unitOfWork.Complete();
         }
 
@@ -128,8 +137,14 @@ namespace Route.MVCApp.BLL.Services.Employees
             var employeeRepo = _unitOfWork.EmployeeRepository;
 
             var employee = employeeRepo.Get(Id);
-            if (employee is { })
-                employeeRepo.Delete(employee);
+
+            if (employee is null)
+                return false;
+
+            if (!string.IsNullOrEmpty(employee.Image))
+                _attachmentService.Delete(employee.Image, "images");
+
+            employeeRepo.Delete(employee);
 
             return _unitOfWork.Complete() > 0;
         }

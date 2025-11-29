@@ -10,6 +10,6 @@ namespace Route.MVCApp.BLL.Common.Service.Attachments
     public interface IAttachmentService
     {
         string? Upload(IFormFile file, string folderName);
-        bool Delete(string filePath);
+        bool Delete(string fileName, string folderName);
     }
 }
