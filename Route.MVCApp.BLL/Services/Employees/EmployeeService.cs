@@ -1,4 +1,5 @@
-﻿using Route.MVCApp.BLL.DTOs.Employees;
+﻿using Route.MVCApp.BLL.Common.Service.Attachments;
+using Route.MVCApp.BLL.DTOs.Employees;
 using Route.MVCApp.DAL.Models.Employees;
 using Route.MVCApp.DAL.Persistence.Repositories.Employees;
 using Route.MVCApp.DAL.Persistence.UnitOfWork;
@@ -13,10 +14,12 @@ namespace Route.MVCApp.BLL.Services.Employees
     public class EmployeeService : IEmployeeService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAttachmentService _attachmentService;
 
-        public EmployeeService(IUnitOfWork unitOfWork)
+        public EmployeeService(IUnitOfWork unitOfWork, IAttachmentService attachmentService)
         {
             _unitOfWork = unitOfWork;
+            _attachmentService = attachmentService;
         }
 
         public IEnumerable<EmployeeDto> GetAllEmployees(string search)
@@ -87,7 +90,11 @@ namespace Route.MVCApp.BLL.Services.Employees
                 LastModifiedOn = DateTime.UtcNow,
             };
 
+            if(employeeDto.Image is not null)
+            employee.Image = _attachmentService.Upload(employeeDto.Image, "images");
+
             _unitOfWork.EmployeeRepository.Add(employee);
+
             return _unitOfWork.Complete();
         }
 

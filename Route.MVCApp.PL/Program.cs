@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Route.MVCApp.BLL.Common.Service.Attachments;
 using Route.MVCApp.BLL.Services.Departments;
 using Route.MVCApp.BLL.Services.Employees;
 using Route.MVCApp.DAL.Persistence.Data.Contexts;
@@ -35,6 +36,8 @@ namespace Route.MVCApp.PL
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
             builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
+
+            builder.Services.AddTransient<IAttachmentService, AttachmentService>();
 
             #endregion
 
