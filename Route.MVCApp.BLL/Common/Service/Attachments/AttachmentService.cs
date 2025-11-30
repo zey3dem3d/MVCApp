@@ -12,7 +12,7 @@ namespace Route.MVCApp.BLL.Common.Service.Attachments
         // Allowed Extensions
         public readonly List<string> _allowedExtensions = [".png", ".jpg", ".jpeg"];
         public const int _allowedSize = 2_097_152;
-        public string? Upload(IFormFile file, string folderName)
+        public async Task<string?> UploadAsync(IFormFile file, string folderName)
         {
             // Validate For Extension
             var extension = Path.GetExtension(file.FileName);
@@ -41,7 +41,7 @@ namespace Route.MVCApp.BLL.Common.Service.Attachments
             using var fileStream = new FileStream(filePath, FileMode.Create);
 
             // Copy File To The Stream
-            file.CopyTo(fileStream);
+            await file.CopyToAsync(fileStream);
 
             // Return File Name
             return fileName;

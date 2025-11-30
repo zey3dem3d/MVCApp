@@ -12,10 +12,10 @@ namespace Route.MVCApp.DAL.Persistence.Repositories._Generic
     {
         // 5 CRUD Operations
         // 1. GetById
-        T? Get(int id);
+        Task<T?> GetAsync(int id);
 
         // 2. GetAll
-        IEnumerable<T> GetAll(bool withNoTracking = true);
+        Task<IEnumerable<T>> GetAllAsync(bool withNoTracking = true);
 
         IQueryable<T> GetAllAsIQueryable();
 

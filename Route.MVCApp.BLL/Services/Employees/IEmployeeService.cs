@@ -9,10 +9,10 @@ namespace Route.MVCApp.BLL.Services.Employees
 {
     public interface IEmployeeService
     {
-        IEnumerable<EmployeeDto> GetAllEmployees(string search);
-        EmployeeDetailsDto GetEmployeeById(int Id);
-        int CreateEmployee(CreatedEmployeeDto employeeDto);
-        int UpdateEmployee(UpdatedEmployeeDto employeeDto);
-        bool DeletedEmployee(int Id);
+        Task<IEnumerable<EmployeeDto>> GetAllEmployeesAsync(string search);
+        Task<EmployeeDetailsDto> GetEmployeeByIdAsync(int Id);
+        Task<int> CreateEmployeeAsync(CreatedEmployeeDto employeeDto);
+        Task<int> UpdateEmployeeAsync(UpdatedEmployeeDto employeeDto);
+        Task<bool> DeletedEmployeeAsync(int Id);
     }
 }

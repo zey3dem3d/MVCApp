@@ -10,10 +10,10 @@ namespace Route.MVCApp.BLL.Services.Departments
 {
     public interface IDepartmentService
     {
-        IEnumerable<DepartmentToReturnDto> GetAllDepartments();
-        DepartmentDetailsDto GetDepartmentById(int Id);
-        int CreateDepartment(CreatedDepartmentDto departmentDto);
-        int UpdateDepartment(UpdatedDepartmentDto departmentDto);
-        bool DeletedDepartment(int Id);
+        Task<IEnumerable<DepartmentToReturnDto>> GetAllDepartmentsAsync();
+        Task <DepartmentDetailsDto?> GetDepartmentByIdAsync(int Id);
+        Task<int> CreateDepartmentAsync(CreatedDepartmentDto departmentDto);
+        Task<int> UpdateDepartmentAsync(UpdatedDepartmentDto departmentDto);
+        Task<bool> DeletedDepartmentAsync(int Id);
     }
 }

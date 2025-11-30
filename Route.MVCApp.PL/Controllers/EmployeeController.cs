@@ -24,9 +24,9 @@ namespace Route.MVCApp.PL.Controllers
 
         #region Index
         [HttpGet]
-        public IActionResult Index(string search)
+        public async Task<IActionResult> Index(string search)
         {
-            var departments = _employeeService.GetAllEmployees(search);
+            var departments = await _employeeService.GetAllEmployeesAsync(search);
 
             return View(departments);
         }
@@ -34,14 +34,14 @@ namespace Route.MVCApp.PL.Controllers
 
         #region Create
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreatedEmployeeDto employeeDto)
+        public async Task<IActionResult> Create(CreatedEmployeeDto employeeDto)
         {
             if (!ModelState.IsValid)
                 return View(employeeDto);
@@ -50,7 +50,7 @@ namespace Route.MVCApp.PL.Controllers
 
             try
             {
-                var result = _employeeService.CreateEmployee(employeeDto);
+                var result = await _employeeService.CreateEmployeeAsync(employeeDto);
 
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
@@ -76,12 +76,12 @@ namespace Route.MVCApp.PL.Controllers
 
         #region Details
         [HttpGet]
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (!id.HasValue)
                 return BadRequest();
 
-            var employee = _employeeService.GetEmployeeById(id.Value);
+            var employee = await _employeeService.GetEmployeeByIdAsync(id.Value);
 
             if (employee is null)
                 return NotFound();
@@ -92,12 +92,12 @@ namespace Route.MVCApp.PL.Controllers
 
         #region Update
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (!id.HasValue)
                 return BadRequest();
 
-            var employee = _employeeService.GetEmployeeById(id.Value);
+            var employee = await _employeeService.GetEmployeeByIdAsync(id.Value);
 
             if (employee is null)
                 return NotFound();
@@ -120,7 +120,7 @@ namespace Route.MVCApp.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto employeeDto)
+        public async Task<IActionResult> Edit([FromRoute] int id, UpdatedEmployeeDto employeeDto)
         {
             if (!ModelState.IsValid)
                 return View(employeeDto);
@@ -129,7 +129,7 @@ namespace Route.MVCApp.PL.Controllers
 
             try
             {
-                var Updated = _employeeService.UpdateEmployee(employeeDto) > 0;
+                var Updated = await _employeeService.UpdateEmployeeAsync(employeeDto) > 0;
 
                 if (Updated)
                     return RedirectToAction(nameof(Index));
@@ -151,13 +151,13 @@ namespace Route.MVCApp.PL.Controllers
         #region Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var message = string.Empty;
 
             try
             {
-                var deleted = _employeeService.DeletedEmployee(id);
+                var deleted = await _employeeService.DeletedEmployeeAsync(id);
 
                 if (deleted)
                     return RedirectToAction(nameof(Index));

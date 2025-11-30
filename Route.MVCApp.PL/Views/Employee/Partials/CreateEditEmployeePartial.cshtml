@@ -1,7 +1,7 @@
 ﻿@model EmployeeBaseDto
 @inject IDepartmentService departmentService
 @{
-	var Deaprtments = new SelectList(departmentService.GetAllDepartments(), nameof(DepartmentToReturnDto.Id), nameof(DepartmentToReturnDto.Name));
+	var Deaprtments = new SelectList(await departmentService.GetAllDepartmentsAsync(), nameof(DepartmentToReturnDto.Id), nameof(DepartmentToReturnDto.Name));
 }
 
 <form asp-action="@ViewBag.Action" class="row col-6" enctype="multipart/form-data">

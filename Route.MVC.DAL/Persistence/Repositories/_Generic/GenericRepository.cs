@@ -14,12 +14,12 @@ namespace Route.MVCApp.DAL.Persistence.Repositories._Generic
     {
         private protected readonly ApplicationDbContext _dbContext = dbContext;
 
-        public IEnumerable<T> GetAll(bool withNoTracking = true)
+        public async Task<IEnumerable<T>> GetAllAsync(bool withNoTracking = true)
         {
             if (withNoTracking)
-                return _dbContext.Set<T>().Where(X => !X.IsDeleted).AsNoTracking().ToList(); // Detached
+                return await _dbContext.Set<T>().Where(X => !X.IsDeleted).AsNoTracking().ToListAsync(); // Detached
 
-            return _dbContext.Set<T>().Where(X => !X.IsDeleted).ToList(); // Unchanged
+            return await _dbContext.Set<T>().Where(X => !X.IsDeleted).ToListAsync(); // Unchanged
         }
 
         public IQueryable<T> GetAllAsIQueryable()
@@ -27,9 +27,9 @@ namespace Route.MVCApp.DAL.Persistence.Repositories._Generic
             return _dbContext.Set<T>();
         }
 
-        public T? Get(int id)
+        public async Task<T?> GetAsync(int id)
         {
-            return _dbContext.Set<T>().Find(id);
+            return await _dbContext.Set<T>().FindAsync(id);
         }
 
         public ApplicationDbContext Get_dbContext()

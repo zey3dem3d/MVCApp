@@ -1,4 +1,5 @@
-﻿using Route.MVCApp.BLL.Common.Service.Attachments;
+﻿using Microsoft.EntityFrameworkCore;
+using Route.MVCApp.BLL.Common.Service.Attachments;
 using Route.MVCApp.BLL.DTOs.Employees;
 using Route.MVCApp.DAL.Models.Employees;
 using Route.MVCApp.DAL.Persistence.Repositories.Employees;
@@ -22,7 +23,7 @@ namespace Route.MVCApp.BLL.Services.Employees
             _attachmentService = attachmentService;
         }
 
-        public IEnumerable<EmployeeDto> GetAllEmployees(string search)
+        public async Task<IEnumerable<EmployeeDto>> GetAllEmployeesAsync(string search)
         {
             var employees = _unitOfWork.EmployeeRepository
                             .GetAllAsIQueryable()
@@ -40,14 +41,14 @@ namespace Route.MVCApp.BLL.Services.Employees
                                 Department = employee.Department.Name,
                                 Image = employee.Image,
 
-                            }).ToList();
+                            }).ToListAsync();
 
-            return employees;
+            return await employees;
         }
 
-        public EmployeeDetailsDto GetEmployeeById(int Id)
+        public async Task<EmployeeDetailsDto> GetEmployeeByIdAsync(int Id)
         {
-            var employee = _unitOfWork.EmployeeRepository.Get(Id);
+            var employee = await _unitOfWork.EmployeeRepository.GetAsync(Id);
 
             if (employee is { })
                 return new EmployeeDetailsDto()
@@ -70,7 +71,7 @@ namespace Route.MVCApp.BLL.Services.Employees
             return null!;
         }
 
-        public int CreateEmployee(CreatedEmployeeDto employeeDto)
+        public async Task<int> CreateEmployeeAsync(CreatedEmployeeDto employeeDto)
         {
             var employee = new Employee()
             {
@@ -91,16 +92,16 @@ namespace Route.MVCApp.BLL.Services.Employees
             };
 
             if (employeeDto.Image is not null)
-                employee.Image = _attachmentService.Upload(employeeDto.Image, "images");
+                employee.Image = await _attachmentService.UploadAsync(employeeDto.Image, "images");
 
             _unitOfWork.EmployeeRepository.Add(employee);
 
-            return _unitOfWork.Complete();
+            return await _unitOfWork.CompleteAsync();
         }
 
-        public int UpdateEmployee(UpdatedEmployeeDto employeeDto)
+        public async Task<int> UpdateEmployeeAsync(UpdatedEmployeeDto employeeDto)
         {
-            var oldEmployee = _unitOfWork.EmployeeRepository.Get(employeeDto.Id);
+            var oldEmployee = await _unitOfWork.EmployeeRepository.GetAsync(employeeDto.Id);
 
             if (oldEmployee is null)
                 return 0;
@@ -110,7 +111,7 @@ namespace Route.MVCApp.BLL.Services.Employees
                 if (oldEmployee.Image is not null)
                     _attachmentService.Delete(oldEmployee.Image, "images");
 
-                var newImage = _attachmentService.Upload(employeeDto.Image, "images");
+                var newImage = await _attachmentService.UploadAsync(employeeDto.Image, "images");
                 oldEmployee.Image = newImage;
             }
 
@@ -129,14 +130,14 @@ namespace Route.MVCApp.BLL.Services.Employees
             oldEmployee.LastModifiedOn = DateTime.UtcNow;
 
             _unitOfWork.EmployeeRepository.Update(oldEmployee);
-            return _unitOfWork.Complete();
+            return await _unitOfWork.CompleteAsync();
         }
 
-        public bool DeletedEmployee(int Id)
+        public async Task<bool> DeletedEmployeeAsync(int Id)
         {
             var employeeRepo = _unitOfWork.EmployeeRepository;
 
-            var employee = employeeRepo.Get(Id);
+            var employee = await employeeRepo.GetAsync(Id);
 
             if (employee is null)
                 return false;
@@ -146,7 +147,7 @@ namespace Route.MVCApp.BLL.Services.Employees
 
             employeeRepo.Delete(employee);
 
-            return _unitOfWork.Complete() > 0;
+            return await _unitOfWork.CompleteAsync() > 0;
         }
 
     }
