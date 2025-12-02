@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Route.MVCApp.BLL.DTOs;
 using Route.MVCApp.BLL.DTOs.Departments;
@@ -7,6 +8,7 @@ using Route.MVCApp.PL.ViewModels.Department;
 
 namespace Route.MVCApp.PL.Controllers
 {
+    [Authorize]
     public class DepartmentController : Controller
     {
         #region Services

@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewData["Title"]</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/Route.MVCApp.PL.styles.css" />
+	<link rel="stylesheet" href="~/css/AuthStyle.css" />
+</head>
+<body>
+	<div class="container">
+      <!-- Title section -->
+      <div class="title">@ViewData["Title"]</div>
+      <div class="content">
+        @RenderBody()
+      </div>
+    </div>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	@await RenderSectionAsync("ValidationScripts", required: false)
+</body>
+</html>

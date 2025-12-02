@@ -1,0 +1,62 @@
+﻿@model RegisterViewModel
+@{
+	ViewData["Title"] = "Register";
+	Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+
+<form asp-action="Register">
+	<div class="user-details">
+		<!-- Input for First Name -->
+		<div class="input-box">
+			<span class="details">First Name</span>
+			<input asp-for="FirstName" placeholder="Enter Your First Name" required />
+			<span asp-validation-for="FirstName" class="text-danger"></span>
+		</div>
+		<!-- Input for Last Name -->
+		<div class="input-box">
+			<span class="details">Last Name</span>
+			<input asp-for="LastName" placeholder="Enter Your Last Name" required />
+			<span asp-validation-for="LastName" class="text-danger"></span>
+		</div>
+		<!-- Input for Username -->
+		<div class="input-box">
+			<span class="details">Username</span>
+			<input asp-for="UserName" placeholder="Enter your User Name" required />
+			<span asp-validation-for="UserName" class="text-danger"></span>
+		</div>
+		<!-- Input for Email -->
+		<div class="input-box">
+			<span class="details">Email</span>
+			<input asp-for="Email" placeholder="Enter Your Email" required />
+			<span asp-validation-for="Email" class="text-danger"></span>
+		</div>
+		<!-- Input for Password -->
+		<div class="input-box">
+			<span class="details">Password</span>
+			<input asp-for="Password" placeholder="Enter Your Password" required />
+			<span asp-validation-for="Password" class="text-danger"></span>
+		</div>
+		<!-- Input for Confirm Password -->
+		<div class="input-box">
+			<span class="details">Confirm Password</span>
+			<input asp-for="ConfirmPassword" placeholder="Confirm Your Password" required />
+			<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+		</div>
+		<!-- Checkbox -->
+		<div style="width: 100%;height: fit-content">
+			<input type="checkbox" class="" name="checkbox" />
+			<label for="checkbox">I Agree To The Terms & Conditions</label>
+		</div>
+		<div asp-validation-summary="ModelOnly" class="mt-3"></div>
+	</div>
+	<!-- Submit button -->
+	<div class="button">
+		<input type="submit" value="Register" />
+	</div>
+	<p>Do You Have An Account? <a asp-action="Login">Login Now!</a></p>
+</form>
+
+@section ValidationScripts
+{
+	<partial name="_ValidationScriptsPartial" />
+}

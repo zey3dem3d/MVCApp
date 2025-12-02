@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Route.MVCApp.BLL.DTOs.Employees;
 using Route.MVCApp.BLL.Services.Departments;
@@ -7,6 +8,7 @@ using Route.MVCApp.DAL.Models.Employees;
 
 namespace Route.MVCApp.PL.Controllers
 {
+    [Authorize]
     public class EmployeeController : Controller
     {
         #region Services

@@ -73,6 +73,9 @@ namespace Route.MVCApp.BLL.Services.Employees
 
         public async Task<int> CreateEmployeeAsync(CreatedEmployeeDto employeeDto)
         {
+            if (employeeDto.DepartmentId == 0)
+                employeeDto.DepartmentId = null;
+
             var employee = new Employee()
             {
                 Name = employeeDto.Name,

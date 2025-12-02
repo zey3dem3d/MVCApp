@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Route.MVCApp.BLL.Common.Service.Attachments;
 using Route.MVCApp.BLL.Services.Departments;
 using Route.MVCApp.BLL.Services.Employees;
+using Route.MVCApp.DAL.Models.Identity;
 using Route.MVCApp.DAL.Persistence.Data.Contexts;
 using Route.MVCApp.DAL.Persistence.Repositories.Departments;
 using Route.MVCApp.DAL.Persistence.Repositories.Employees;
@@ -26,18 +28,30 @@ namespace Route.MVCApp.PL
             });
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            //builder.Services.AddScoped<IDepartmentRepository, DepartmentRepositories>();
-
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
-
-            //builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
+            builder.Services.AddTransient<IAttachmentService, AttachmentService>();
 
             builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
 
-            builder.Services.AddTransient<IAttachmentService, AttachmentService>();
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>((option) =>
+            {
+                //option.Password.RequiredLength = 6;
+                //option.Password.RequireNonAlphanumeric = true;
+                //option.Password.RequireUppercase = true;
+                //option.Password.RequireLowercase = true;
+                //option.Password.RequireDigit = true;
+                //option.Password.RequiredUniqueChars = 1;
+
+                //option.User.RequireUniqueEmail = true;
+                //option.User.AllowedUserNameCharacters = "ABZET";
+                //option.Lockout.MaxFailedAccessAttempts = 3;
+                //option.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(4);
+
+            })
+                            .AddEntityFrameworkStores<ApplicationDbContext>()
+                            .AddDefaultTokenProviders();
 
             #endregion
 
@@ -57,9 +71,12 @@ namespace Route.MVCApp.PL
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Register}/{id?}");
             #endregion
 
             app.Run();
