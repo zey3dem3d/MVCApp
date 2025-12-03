@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Route.MVCApp.BLL.Common.Service.Attachments;
+using Route.MVCApp.BLL.Common.Service.EmailSettings;
 using Route.MVCApp.BLL.Services.Departments;
 using Route.MVCApp.BLL.Services.Employees;
 using Route.MVCApp.DAL.Models.Identity;
@@ -32,6 +33,7 @@ namespace Route.MVCApp.PL
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
             builder.Services.AddTransient<IAttachmentService, AttachmentService>();
+            builder.Services.AddScoped<IEmailSettings, EmailSettings>();
 
             builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
 
